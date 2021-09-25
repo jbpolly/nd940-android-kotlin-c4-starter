@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_app">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/home_title_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Welcome to\nReminder App!"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:textSize="32sp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_title_guideline" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login_button"
+            android:background="@drawable/bg_solid_button"
+            android:layout_width="@dimen/standard_button_width"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/register_button"
+            app:layout_constraintTop_toBottomOf="@id/home_title"
+            app:layout_constraintVertical_bias="1"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/register_button"
+            android:background="@drawable/bg_solid_button"
+            android:layout_width="@dimen/standard_button_width"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:layout_marginBottom="@dimen/margin_very_large"
+            app:layout_constraintEnd_toEndOf="@id/login_button"
+            app:layout_constraintStart_toStartOf="@id/login_button"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

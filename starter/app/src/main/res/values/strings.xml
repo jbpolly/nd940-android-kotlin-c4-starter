@@ -10,7 +10,6 @@
     <string name="reminder_saved">Reminder Saved !</string>
     <string name="logout">Logout</string>
     <string name="welcome_to_the_location_reminder_app">Welcome to the location reminder app</string>
-    <string name="login">Login</string>
     <string name="title_activity_maps">Map</string>
     <string name="normal_map">Normal Map</string>
     <string name="hybrid_map">Hybrid Map</string>
@@ -34,10 +33,36 @@
     <string name="err_enter_title">Please enter title</string>
     <string name="err_select_location">Please select location</string>
 
+
+    <string name="are_you_sure_location_reminder">Are you sure you want to set the reminder location at %s ?</string>
+    <string name="text_continue">Continue</string>
+    <string name="location_permission_not_granted">Permission to use location not granted.</string>
+    <string name="check_in_retry">Try Again</string>
+    <string name="fine_location_title">Enable Fine Location Services</string>
+    <string name="background_location_title">Enable Background Location Services</string>
+    <string name="widget_background_location_description">The app collects location data, even when the app is closed or not in use, to allow it to detect when you\'ve entered the location of an event.</string>
+
     <!-- Error strings -->
     <string name="geofence_unknown_error">Unknown error: the Geofence service is not available now.</string>
     <string name="geofence_not_available">Geofence service is not available now. Go to Settings>Location>Mode and choose High accuracy.</string>
     <string name="geofence_too_many_geofences">Your app has registered too many geofences.</string>
     <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences() call.</string>
     <string name="error_adding_geofence">Error Happened, Can\'t Add Geofence</string>
+    <string name="select_an_option">Select an option:</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Insert your email…</string>
+    <string name="register_with_your_email">Register with your email</string>
+    <string name="password">Password</string>
+    <string name="password_hint">Insert your password…</string>
+    <string name="register_with_social_media">Register with social media</string>
+    <string name="or">OR</string>
+    <string name="login_with_social_media">Login with social media</string>
+    <string name="enter">Enter</string>
+    <string name="enter_your_information_to_login">Enter your information to login:</string>
+    <string name="problem_register">There was a problem trying to register. Please try again later.</string>
+    <string name="save_reminder_button">Save reminder button</string>
+    <string name="map_instructions">Click on a POI or long click on a position to set the location for your reminder</string>
+    <string name="geofences_added">Geofence added.</string>
 </resources>

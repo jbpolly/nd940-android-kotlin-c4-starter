@@ -2,23 +2,31 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/reminderListFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/reminderListFragment"
-        android:name="com.udacity.project4.locationreminders.reminderslist.ReminderListFragment"
-        android:label="ReminderListFragment">
+        android:name="com.udacity.project4.ui.locationreminders.reminderslist.ReminderListFragment"
+        android:label="Reminder List">
         <action
             android:id="@+id/to_save_reminder"
             app:destination="@id/saveReminderFragment" />
+        <action
+            android:id="@+id/action_reminderListFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_reminderListFragment_to_reminderDetailsFragment"
+            app:destination="@id/reminderDetailsFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.udacity.project4.locationreminders.RemindersActivity"
-        android:label="MainActivity" />
+        android:name="com.udacity.project4.ui.locationreminders.RemindersActivity"
+        android:label="Reminder App" />
     <fragment
         android:id="@+id/saveReminderFragment"
-        android:name="com.udacity.project4.locationreminders.savereminder.SaveReminderFragment"
+        android:name="com.udacity.project4.ui.savereminder.SaveReminderFragment"
         android:label="Add Reminder">
         <action
             android:id="@+id/action_saveReminderFragment_to_reminderListFragment"
@@ -29,7 +37,57 @@
     </fragment>
     <fragment
         android:id="@+id/selectLocationFragment"
-        android:name="com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationFragment"
+        android:name="com.udacity.project4.ui.savereminder.selectreminderlocation.SelectLocationFragment"
         android:label="Select Location" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.udacity.project4.ui.authentication.login.LoginFragment"
+        android:label="Login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/reminderListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.udacity.project4.ui.authentication.register.RegisterFragment"
+        android:label="Register" >
+        <action
+            android:id="@+id/action_registerFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/reminderListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.udacity.project4.ui.authentication.home.HomeFragment"
+        android:label="Home" >
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reminderDetailsFragment"
+        android:name="com.udacity.project4.ui.reminderdetails.ReminderDetailsFragment"
+        android:label="Reminder Details" >
+        <action
+            android:id="@+id/action_reminderDetailsFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment" />
+        <argument
+            android:name="reminder"
+            app:argType="com.udacity.project4.ui.locationreminders.reminderslist.ReminderDataItem"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>

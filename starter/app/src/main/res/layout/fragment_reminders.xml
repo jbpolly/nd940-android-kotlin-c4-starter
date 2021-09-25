@@ -7,19 +7,19 @@
 
         <variable
             name="viewModel"
-            type="com.udacity.project4.locationreminders.reminderslist.RemindersListViewModel" />
+            type="com.udacity.project4.ui.locationreminders.reminderslist.RemindersListViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".locationreminders.reminderslist.ReminderListFragment">
+        tools:context="com.udacity.project4.ui.locationreminders.reminderslist.ReminderListFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@drawable/bg_app">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/reminderssRecyclerView"
@@ -68,5 +68,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
