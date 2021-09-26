@@ -241,8 +241,8 @@ class SaveReminderFragment : BaseFragment() {
             .setPositiveButton(getString(R.string.text_continue)) { _, _ ->
                 requestFineLocationPermissionLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                // dismiss dialog
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
             }
             .show()
     }
@@ -256,8 +256,8 @@ class SaveReminderFragment : BaseFragment() {
             .setPositiveButton(getString(R.string.text_continue)) { _, _ ->
                 requestBackgroundLocationPermissionLaunch.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             }
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                // dismiss dialog
+            .setNegativeButton(android.R.string.cancel) {dialog, _ ->
+                dialog.dismiss()
             }
             .show()
     }

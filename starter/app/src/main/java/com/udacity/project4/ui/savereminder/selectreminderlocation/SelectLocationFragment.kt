@@ -117,8 +117,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             .setPositiveButton(getString(R.string.text_continue)) { _, _ ->
                 onLocationSelected(latLong, title, poi)
             }
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                // dismiss dialog
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
             }
             .show()
     }

@@ -50,22 +50,20 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
     }
 
     private fun sendNotification(triggeringGeofences: List<Geofence>) {
-        val requestId = when {
-            triggeringGeofences.isNotEmpty() ->
-                triggeringGeofences[0].requestId
-            else -> {
-                Log.e(GEOFENCE_TAG, "No Geofence Trigger Found! Abort mission!")
-                return
-            }
-        }
         val remindersDao = LocalDB.createRemindersDao(this)
-        CoroutineScope(coroutineContext).launch(SupervisorJob()) {
-            val result = remindersDao.getReminderById(requestId)
-            result?.let { item->
-                sendNotification(this@GeofenceTransitionsJobIntentService, item.toReminderDataItem())
+        if(triggeringGeofences.isEmpty()){
+            Log.e(GEOFENCE_TAG, "No Geofence Trigger Found! Abort mission!")
+            return
+        }else{
+            for(trigger in triggeringGeofences){
+                val requestId = trigger.requestId
+                CoroutineScope(coroutineContext).launch(SupervisorJob()) {
+                    val result = remindersDao.getReminderById(requestId)
+                    result?.let { item->
+                        sendNotification(this@GeofenceTransitionsJobIntentService, item.toReminderDataItem())
+                    }
+                }
             }
-
-
         }
     }
 
