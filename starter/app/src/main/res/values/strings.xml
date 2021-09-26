@@ -65,4 +65,5 @@
     <string name="save_reminder_button">Save reminder button</string>
     <string name="map_instructions">Click on a POI or long click on a position to set the location for your reminder</string>
     <string name="geofences_added">Geofence added.</string>
+    <string name="welcome_to_nreminder_app">Welcome to\nReminder App!</string>
 </resources>

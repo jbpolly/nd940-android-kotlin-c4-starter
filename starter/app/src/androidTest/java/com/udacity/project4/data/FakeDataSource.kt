@@ -2,9 +2,8 @@ package com.udacity.project4.data
 
 import com.udacity.project4.data.dto.ReminderDTO
 import com.udacity.project4.data.dto.Result
-import kotlinx.coroutines.runBlocking
 
-class FakeDataSource : ReminderDataSource {
+class FakeAndroidDataSource : ReminderDataSource {
 
     var remindersFakeDb: LinkedHashMap<String, ReminderDTO> = LinkedHashMap()
 

@@ -90,7 +90,7 @@ class SaveReminderFragment : BaseFragment() {
     }
 
     private fun addReminderToDb(reminderDataItem: ReminderDataItem) {
-        _viewModel.saveReminder(reminderDataItem)
+        _viewModel.validateAndSaveReminder(reminderDataItem)
     }
 
     /*
