@@ -1,4 +1,4 @@
-package com.udacity.project4
+package com.udacity.project4.util
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView
@@ -6,7 +6,8 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import com.udacity.project4.EspressoExtensions.Companion.searchFor
+import com.udacity.project4.util.EspressoExtensions.Companion.searchFor
+
 import org.hamcrest.Matcher
 import java.lang.Thread.sleep
 

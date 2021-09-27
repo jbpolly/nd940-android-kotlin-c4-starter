@@ -1,4 +1,4 @@
-package com.udacity.project4
+package com.udacity.project4.util
 
 import android.view.View
 import androidx.test.espresso.NoMatchingViewException

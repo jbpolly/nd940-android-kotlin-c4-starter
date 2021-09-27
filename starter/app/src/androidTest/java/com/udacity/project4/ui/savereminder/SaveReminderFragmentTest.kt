@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
@@ -16,11 +17,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
-import com.udacity.project4.ToastMatcher
+import com.udacity.project4.util.ToastMatcher
 import com.udacity.project4.core.utils.EspressoIdlingResource
 import com.udacity.project4.data.FakeAndroidDataSource
 import com.udacity.project4.data.ReminderDataSource
 import com.udacity.project4.data.dto.ReminderDTO
+import com.udacity.project4.data.local.LocalDB
+import com.udacity.project4.ui.locationreminders.reminderslist.RemindersListViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +32,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.mockito.Mockito
@@ -59,6 +65,7 @@ class SaveReminderFragmentTest: AutoCloseKoinTest() {
 
     @Before
     fun setup() {
+        stopKoin()
         FirebaseAuth.getInstance().signInWithEmailAndPassword(
             "juliana.teste@teste.com",
             "abc123"
@@ -87,11 +94,27 @@ class SaveReminderFragmentTest: AutoCloseKoinTest() {
                 longitude = 10.3
             )
         )
-        loadKoinModules(
-            module(override = true) {
-                single { repository }
+        val myModule = module {
+            viewModel {
+                RemindersListViewModel(
+                    ApplicationProvider.getApplicationContext(),
+                    get() as ReminderDataSource
+                )
             }
-        )
+            single {
+                SaveReminderViewModel(
+                    ApplicationProvider.getApplicationContext(),
+                    get() as ReminderDataSource
+                )
+            }
+            single { repository as ReminderDataSource }
+            single { LocalDB.createRemindersDao(ApplicationProvider.getApplicationContext()) }
+        }
+        //declare a new koin module
+        startKoin {
+            modules(listOf(myModule))
+        }
+
     }
 
 

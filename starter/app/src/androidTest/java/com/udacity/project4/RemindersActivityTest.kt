@@ -3,16 +3,13 @@ package com.udacity.project4
 import android.app.Application
 import android.content.Context
 import android.view.autofill.AutofillManager
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -28,8 +25,7 @@ import com.udacity.project4.data.local.RemindersLocalRepository
 import com.udacity.project4.ui.locationreminders.RemindersActivity
 import com.udacity.project4.ui.locationreminders.reminderslist.RemindersListViewModel
 import com.udacity.project4.ui.savereminder.SaveReminderViewModel
-import com.udacity.project4.util.DataBindingIdlingResource
-import com.udacity.project4.util.monitorActivity
+import com.udacity.project4.util.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -90,10 +86,16 @@ class RemindersActivityTest :
         runBlocking {
             repository.deleteAllReminders()
         }
-        FirebaseAuth.getInstance().signOut()
+        //FirebaseAuth.getInstance().signOut()
         val autofillManager: AutofillManager = ApplicationProvider.getApplicationContext<Context>()
             .getSystemService(AutofillManager::class.java)
         autofillManager.disableAutofillServices()
+
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+            "juliana.teste@teste.com",
+            "abc123"
+        )
+
     }
 
     @Before
@@ -114,32 +116,6 @@ class RemindersActivityTest :
 
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        onView(ViewMatchers.withText(R.string.welcome_to_nreminder_app))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.login_button)).perform(ViewActions.click())
-
-        onView(withId(R.id.login_title))
-            .check(matches(ViewMatchers.isDisplayed()))
-
-        onView(withId(R.id.email_field))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.email_field)).perform(ViewActions.typeText("juliana.teste@teste.com"))
-
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
-        onView(withId(R.id.password_field))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.password_field)).perform(ViewActions.typeText("abc123"))
-
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
-        onView(withId(R.id.enter_button)).perform(ViewActions.click())
-
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(
-            "juliana.teste@teste.com",
-            "abc123"
-        )
 
         BaseRobot().assertOnView(
             withId(R.id.addReminderFAB),
@@ -188,69 +164,5 @@ class RemindersActivityTest :
 
     }
 
-
-    @Test
-    fun fromHome_goToRegister_registerEnabled() {
-
-        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        onView(ViewMatchers.withText(R.string.welcome_to_nreminder_app))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.register_button)).perform(ViewActions.click())
-
-        onView(withId(R.id.register_title))
-            .check(matches(ViewMatchers.isDisplayed()))
-
-        onView(withId(R.id.email_field))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.email_field)).perform(ViewActions.typeText("juliana.teste@teste.com"))
-
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
-        onView(withId(R.id.password_field))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.password_field)).perform(ViewActions.typeText("abc123"))
-
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
-        onView(withId(R.id.register_button)).perform(ViewActions.click())
-
-        activityScenario.close()
-
-    }
-
-    @Test
-    fun fromHome_goToLogin_goBackToHome() {
-
-        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(activityScenario)
-
-        onView(ViewMatchers.withText(R.string.welcome_to_nreminder_app))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.login_button)).perform(ViewActions.click())
-
-        onView(withId(R.id.login_title))
-            .check(matches(ViewMatchers.isDisplayed()))
-
-        onView(withId(R.id.email_field))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.email_field)).perform(ViewActions.typeText("juliana.teste@teste.com"))
-
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
-        onView(withId(R.id.password_field))
-            .check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.password_field)).perform(ViewActions.typeText("abc123"))
-
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
-        Espresso.pressBack()
-        onView(ViewMatchers.withText(R.string.welcome_to_nreminder_app))
-            .check(matches(ViewMatchers.isDisplayed()))
-
-        activityScenario.close()
-
-    }
 
 }

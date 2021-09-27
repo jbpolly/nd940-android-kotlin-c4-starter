@@ -1,8 +1,5 @@
-package com.udacity.project4
+package com.udacity.project4.util
 
-import android.os.IBinder
-
-import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 import android.view.WindowManager.LayoutParams.TYPE_TOAST
 import androidx.test.espresso.Espresso.onView
@@ -68,9 +65,13 @@ class ToastMatcher(private val maxFailures: Int = DEFAULT_MAX_FAILURES) : TypeSa
         /** Default for maximum number of retries to wait for the toast to pop up */
         private const val DEFAULT_MAX_FAILURES = 5
 
-        fun onToast(text: String, maxRetries: Int = DEFAULT_MAX_FAILURES) = onView(withText(text)).inRoot(isToast(maxRetries))!!
+        fun onToast(text: String, maxRetries: Int = DEFAULT_MAX_FAILURES) = onView(withText(text)).inRoot(
+            isToast(maxRetries)
+        )!!
 
-        fun onToast(textId: Int, maxRetries: Int = DEFAULT_MAX_FAILURES) = onView(withText(textId)).inRoot(isToast(maxRetries))!!
+        fun onToast(textId: Int, maxRetries: Int = DEFAULT_MAX_FAILURES) = onView(withText(textId)).inRoot(
+            isToast(maxRetries)
+        )!!
 
         fun isToast(maxRetries: Int = DEFAULT_MAX_FAILURES): Matcher<Root> {
             return ToastMatcher(maxRetries)

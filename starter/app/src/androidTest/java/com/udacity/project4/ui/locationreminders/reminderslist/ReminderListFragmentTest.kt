@@ -5,6 +5,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -14,15 +15,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
-import com.udacity.project4.RecyclerViewItemCountAssertion.Companion.withItemCount
+import com.udacity.project4.util.RecyclerViewItemCountAssertion.Companion.withItemCount
 import com.udacity.project4.data.FakeAndroidDataSource
 import com.udacity.project4.data.ReminderDataSource
 import com.udacity.project4.data.dto.ReminderDTO
+import com.udacity.project4.data.local.LocalDB
+import com.udacity.project4.data.local.RemindersLocalRepository
+import com.udacity.project4.ui.savereminder.SaveReminderViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.mockito.Mockito.mock
@@ -39,6 +46,7 @@ class ReminderListFragmentTest : AutoCloseKoinTest() {
 
     @Before
     fun setup() {
+        stopKoin()//stop the original app koin
         FirebaseAuth.getInstance().signInWithEmailAndPassword(
             "juliana.teste@teste.com",
             "abc123"
@@ -67,23 +75,37 @@ class ReminderListFragmentTest : AutoCloseKoinTest() {
                 longitude = 10.3
             )
         )
-        //   viewModel = mock(RemindersListViewModel::class.java)
-        loadKoinModules(
-            module(override = true) {
-//                viewModel<RemindersListViewModel> {
-//                    mock(RemindersListViewModel::class.java)
-//                }
-                single { repository as ReminderDataSource }
+
+        val myModule = module {
+            viewModel {
+                RemindersListViewModel(
+                    ApplicationProvider.getApplicationContext(),
+                    get() as ReminderDataSource
+                )
             }
-        )
+            single {
+                SaveReminderViewModel(
+                    ApplicationProvider.getApplicationContext(),
+                    get() as ReminderDataSource
+                ).apply {
+                    reminderSelectedLocationStr.value = "Test Location"
+                }
+            }
+            single { repository as ReminderDataSource }
+            single { LocalDB.createRemindersDao(ApplicationProvider.getApplicationContext()) }
+        }
+        //declare a new koin module
+        startKoin {
+            modules(listOf(myModule))
+        }
 
     }
 
-    @Test
-    fun test() {
-        //verify(viewModel.loadReminders())
-        //`when`(viewModel.loadReminders()).thenReturn()
-    }
+//    @Test
+//    fun test() {
+//        //verify(viewModel.loadReminders())
+//        //`when`(viewModel.loadReminders()).thenReturn()
+//    }
 
     @Test
     fun initializeReminder_showRemindersList() {
