@@ -11,6 +11,7 @@ import com.udacity.project4.data.dto.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -106,5 +107,22 @@ class RemindersLocalRepositoryTest {
         assertThat(result.data).isEmpty()
 
     }
+
+    @Test
+    fun saveReminders_getReminderByWrongId_returnsError() = runBlocking {
+        val reminder1 = ReminderDTO(title = "Title1", description = "Description1", location = "Location1", latitude = 50.0, longitude = 30.0)
+        val reminder2 = ReminderDTO(title = "Title2", description = "Description2", location = "Location2", latitude = 20.0, longitude = 20.0)
+        val reminder3 = ReminderDTO(title = "Title3", description = "Description3", location = "Location3", latitude = 70.5, longitude = 10.3)
+        localRemindersRepository.saveReminder(reminder1)
+        localRemindersRepository.saveReminder(reminder2)
+        localRemindersRepository.saveReminder(reminder3)
+
+        val result = localRemindersRepository.getReminder("error_id")
+        assertThat(result).isInstanceOf(Result.Error::class.java)
+        result as Result.Error
+        assertThat(result.message).isEqualTo("Reminder not found!")
+
+    }
+
 
 }

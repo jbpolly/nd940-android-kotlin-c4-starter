@@ -26,7 +26,6 @@ interface RemindersDao {
 
     /**
      * Insert a reminder in the database. If the reminder already exists, replace it.
-     *
      * @param reminder the reminder to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)

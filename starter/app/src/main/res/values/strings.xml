@@ -41,7 +41,7 @@
     <string name="fine_location_title">Enable Fine Location Services</string>
     <string name="background_location_title">Enable Background Location Services</string>
     <string name="widget_background_location_description">The app collects location data, even when the app is closed or not in use, to allow it to detect when you\'ve entered the location of an event.</string>
-
+    <string name="my_location_permission_description">We use your precise location to be able to set your position on the map for a better experience.</string>
     <!-- Error strings -->
     <string name="geofence_unknown_error">Unknown error: the Geofence service is not available now.</string>
     <string name="geofence_not_available">Geofence service is not available now. Go to Settings>Location>Mode and choose High accuracy.</string>

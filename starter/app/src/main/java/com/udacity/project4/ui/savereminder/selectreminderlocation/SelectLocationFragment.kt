@@ -1,13 +1,18 @@
 package com.udacity.project4.ui.savereminder.selectreminderlocation
 
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -23,6 +28,7 @@ import com.udacity.project4.core.utils.setDisplayHomeAsUpEnabled
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.ui.savereminder.SaveReminderViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
 class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
@@ -30,7 +36,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    override val _viewModel: SaveReminderViewModel by inject()
+    override val _viewModel: SaveReminderViewModel by sharedViewModel()
     private lateinit var binding: FragmentSelectLocationBinding
 
     override fun onCreateView(
@@ -53,11 +59,52 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         return binding.root
     }
 
-    @SuppressLint("MissingPermission")
+
     override fun onMapReady(readyMap: GoogleMap) {
         map = readyMap
-        val zoomLevel = 13f
         setMapStyle(map)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            setMyLocation()
+        }else{
+            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                displayFineLocationPermissionRationale()
+            } else {
+                requestFineLocationPermissionLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+        setMapLongClick(map)
+        setPoiClick(map)
+
+    }
+
+    private val requestFineLocationPermissionLaunch =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                setMyLocation()
+            }else{
+                Toast.makeText(requireContext(), "Permission required for my location feature denied. To change it go to Settings > Apps > Permissions", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    private fun displayFineLocationPermissionRationale() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.fine_location_title))
+            .setMessage(getString(R.string.my_location_permission_description))
+            .setPositiveButton(getString(R.string.text_continue)) { _, _ ->
+                requestFineLocationPermissionLaunch.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "Permission request canceled. Feature will be unavailable.", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+    }
+
+
+
+    @SuppressLint("MissingPermission")
+    private fun setMyLocation() {
+        val zoomLevel = 13f
         map.isMyLocationEnabled = true
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
@@ -73,9 +120,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                     )
                 }
             }
-        setMapLongClick(map)
-        setPoiClick(map)
-
     }
 
     private fun setMapLongClick(map: GoogleMap) {
